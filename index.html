@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>株式会社かみねんど｜クリエイティブで心を豊かにする</title>
+<meta name="description" content="株式会社かみねんど。魔法の公式LINE（構築・運用・開発）、パフォーマー派遣、商品開発、経営コンサルティング。発想力・技術力・演出力で、あたらしい価値をつくります。">
+<meta property="og:title" content="株式会社かみねんど">
+<meta property="og:description" content="クリエイティブで 心を豊かにする。魔法の公式LINE／パフォーマー派遣／商品開発／経営コンサルティング">
+<meta name="theme-color" content="#05070f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#e8ecf5;
+  --bg:#05070f;
+  --navy:#0d1526;
+  --cyan:#9fe8ff;
+  --green:#8ef0b4;
+  --gold:#ffd76a;
+  --pink:#ff9db0;
+  --line:#06c755;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DotGothic16','MS Gothic','ＭＳ ゴシック',monospace;
+  line-height:1.9;
+  overflow-x:hidden;
+}
+
+/* 星空・走査線 */
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+#stars i{position:absolute;width:2px;height:2px;background:#fff;animation:twinkle 2.6s infinite}
+@keyframes twinkle{0%,100%{opacity:.08}50%{opacity:.8}}
+#crt{
+  position:fixed;inset:0;z-index:90;pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 1px, transparent 1px 3px);
+  opacity:.4;
+}
+
+/* RPGウィンドウ */
+.win{
+  position:relative;
+  background:rgba(4,8,18,.92);
+  border:3px solid #fff;
+  border-radius:8px;
+  box-shadow:0 0 0 3px #000, inset 0 0 0 2px #000;
+  padding:20px 18px;
+}
+.win .cap{
+  position:absolute;top:-12px;left:12px;
+  background:#000;border:2px solid #fff;border-radius:5px;
+  padding:1px 10px;font-size:12px;letter-spacing:.15em;
+}
+
+/* ヘッダー */
+header{
+  position:sticky;top:0;z-index:80;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:10px 14px;
+  background:rgba(5,7,15,.92);border-bottom:2px solid #222a3e;
+  backdrop-filter:blur(4px);
+}
+.chip{
+  background:#000;border:2px solid #fff;border-radius:5px;
+  padding:2px 10px;font-size:12px;letter-spacing:.12em;color:#fff;
+  text-decoration:none;font-family:inherit;cursor:pointer;
+}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a.chip{font-size:11px}
+nav a.chip:hover{color:var(--gold)}
+
+/* レイアウト */
+main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 16px 80px}
+section{margin-top:72px;scroll-margin-top:70px}
+.sec-label{font-size:11px;letter-spacing:.4em;color:var(--green);margin-bottom:10px}
+h2{font-size:clamp(22px,5.5vw,28px);letter-spacing:.1em;margin-bottom:22px}
+
+/* 出現アニメーション（スクロールでポップ） */
+.pop{opacity:0;transform:translateY(18px)}
+.pop.shown{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+
+/* ヒーロー */
+#hero{margin-top:56px;position:relative}
+#hero .win{padding:34px 22px 30px}
+.hero-name{font-size:clamp(30px,8vw,44px);letter-spacing:.08em;line-height:1.4}
+.hero-vision{color:var(--cyan);font-size:clamp(15px,4vw,18px);margin-top:12px;min-height:1.9em}
+.hero-copy{font-size:13.5px;color:#b9c3d6;margin-top:14px}
+.cta-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#000;border:3px solid #fff;border-radius:8px;
+  color:#fff;text-decoration:none;font-family:inherit;font-size:14px;
+  padding:12px 18px;cursor:pointer;letter-spacing:.05em;
+  transition:transform .12s ease;
+}
+.btn:active{transform:scale(.96)}
+.btn.primary{border-color:var(--line);color:#fff;background:var(--line)}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.btn.green{border-color:var(--green);color:var(--green)}
+#chara{
+  position:absolute;left:18px;top:-52px;z-index:5;
+  width:48px;height:54px;image-rendering:pixelated;cursor:pointer;
+}
+#chara-say{
+  position:absolute;left:70px;top:-46px;z-index:5;display:none;
+  background:#000;border:2px solid #fff;border-radius:6px;
+  font-size:11px;padding:4px 10px;white-space:nowrap;
+}
+
+/* 事業カード */
+.biz{display:flex;flex-direction:column;gap:26px}
+.biz .win{padding-top:26px}
+.biz h3{font-size:18px;letter-spacing:.06em;color:var(--gold)}
+.biz p{font-size:13px;color:#c5cede;margin-top:8px}
+.biz .skill{margin-top:10px;font-size:12px;line-height:2}
+.biz .skill li{list-style:none;padding-left:1.2em;text-indent:-1.2em}
+.biz .skill li::before{content:"▶";color:var(--green);margin-right:.4em;font-size:10px}
+.biz .btn{margin-top:16px;font-size:12.5px;padding:10px 14px}
+.free-tag{display:inline-block;background:var(--gold);color:#000;font-size:10.5px;border-radius:99px;padding:1px 10px;margin-left:8px;vertical-align:middle}
+
+/* 代表 */
+#ceo .win{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+#ceo-face{width:96px;height:108px;image-rendering:pixelated;flex:0 0 auto;border:2px solid #fff;border-radius:6px;background:#0a0f1e}
+#ceo .t{flex:1;min-width:200px}
+#ceo .name{font-size:20px;letter-spacing:.1em}
+#ceo .role{font-size:11.5px;color:var(--cyan)}
+#ceo p{font-size:12.5px;color:#c5cede;margin-top:8px}
+
+/* 会社概要 */
+.about-table{width:100%;font-size:13px;border-collapse:collapse}
+.about-table th{
+  text-align:left;color:var(--cyan);font-weight:normal;
+  padding:9px 12px 9px 0;white-space:nowrap;vertical-align:top;width:7em;
+}
+.about-table td{padding:9px 0}
+.about-table tr+tr th,.about-table tr+tr td{border-top:1px dashed #2a3450}
+
+/* お問い合わせ */
+.g-form label{display:block;font-size:12px;color:var(--cyan);margin:14px 0 5px}
+.g-form input,.g-form textarea{
+  width:100%;background:#000;border:2px solid #fff;border-radius:5px;
+  color:#fff;font-family:inherit;font-size:16px;padding:10px 11px;
+  outline:none;caret-color:var(--green);
+}
+.g-form input:focus,.g-form textarea:focus{border-color:var(--green)}
+.g-form textarea{min-height:110px;resize:vertical}
+.g-send{
+  margin-top:18px;width:100%;
+  background:#000;border:3px solid var(--green);border-radius:8px;
+  color:var(--green);font-family:inherit;font-size:15px;letter-spacing:.1em;
+  padding:14px;cursor:pointer;transition:transform .12s ease;
+}
+.g-send:active{transform:scale(.98)}
+.g-note{font-size:11px;color:#8b93a8;margin-top:10px;line-height:1.9}
+#form-done{display:none;text-align:center;padding:22px 0 8px;font-size:14px;color:var(--green)}
+
+/* フッター */
+footer{
+  position:relative;z-index:1;text-align:center;
+  padding:26px 16px 34px;border-top:2px solid #222a3e;
+  font-size:11px;color:#8b93a8;letter-spacing:.1em;
+}
+footer a{color:var(--cyan);text-decoration:none}
+
+/* かみふぶき */
+#confetti{position:fixed;inset:0;z-index:60;pointer-events:none;display:none}
+#confetti.on{display:block}
+#confetti i{position:absolute;top:-12px;width:7px;height:7px;animation:confall linear infinite}
+@keyframes confall{to{transform:translateY(105vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<header>
+  <a class="chip" href="#top">かみねんど</a>
+  <nav>
+    <a class="chip" href="#biz">じぎょう</a>
+    <a class="chip" href="#ceo">だいひょう</a>
+    <a class="chip" href="#about">かいしゃ</a>
+    <a class="chip" href="#contact">といあわせ</a>
+    <button class="chip" id="snd" type="button">おと:ON</button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ヒーロー -->
+  <section id="hero">
+    <canvas id="chara" width="16" height="18" title="…？"></canvas>
+    <span id="chara-say"></span>
+    <div class="win">
+      <span class="cap">KAMINENDO Inc.</span>
+      <h1 class="hero-name">株式会社<br>かみねんど</h1>
+      <p class="hero-vision" id="vision"></p>
+      <p class="hero-copy">
+        発想力・技術力・演出力を かけあわせて、あたらしい価値をつくる会社です。<br>
+        マジックの「驚き」と テクノロジーの「仕組み」で、あなたのビジネスを進化させます。
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener">▶ 公式LINEで無料診断</a>
+        <a class="btn" href="#contact">✉ お問い合わせ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 事業 -->
+  <section id="biz">
+    <p class="sec-label pop">QUEST LIST</p>
+    <h2 class="pop">じぎょう ないよう</h2>
+    <div class="biz">
+      <div class="win pop">
+        <span class="cap">メインクエスト</span>
+        <h3>魔法の公式LINE<span class="free-tag">無料診断あり</span></h3>
+        <p>公式LINEを、売り上げにつながる武器へと変える。構築から運用・開発まで、0から100まで伴走する公式LINEオペレーターです。</p>
+        <ul class="skill">
+          <li>アカウント新規構築 — 業種・商材ごとにゼロから専用設計</li>
+          <li>運用支援 — 配信・分析・顧客対応まで、一部でも丸投げでも</li>
+          <li>改善サポート — データで課題を特定し、成果を最大化</li>
+          <li>機能開発 — 業務に合わせた機能でLINEの可能性を広げる</li>
+        </ul>
+        <p style="margin-top:12px">まずは<b style="color:var(--gold)">無料アカウント診断</b>から。10ページ超えの改善レポートを無料でお渡しします（しつこい営業は一切なし）。</p>
+        <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener">▶ 無料診断をうける</a>
+      </div>
+      <div class="win pop">
+        <span class="cap">クエスト</span>
+        <h3>パフォーマー派遣</h3>
+        <p>イベント・販促・集客企画に、プロのマジシャン／パフォーマーを派遣。出演だけでなく、目的に合わせた演出設計からお手伝いします。</p>
+        <a class="btn gold" href="#contact">▶ 出演の相談をする</a>
+      </div>
+      <div class="win pop">
+        <span class="cap">クエスト</span>
+        <h3>商品開発・販売</h3>
+        <p>マジックの発想を応用した、独自性の高いプロダクトの企画・制作・販売。「SNSで拡散される名刺」「商談のアイスブレイクになるノベルティ」など、記憶に残るモノづくり。</p>
+        <a class="btn gold" href="#contact">▶ 相談してみる</a>
+      </div>
+      <div class="win pop">
+        <span class="cap">クエスト</span>
+        <h3>経営コンサルティング</h3>
+        <p>エンタメ×テクノロジーの視点で、集客の仕組みづくりから業務のDX化まで。IT導入補助金の活用など、コストを抑えた進め方もご提案します。</p>
+        <a class="btn gold" href="#contact">▶ 相談してみる</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 代表 -->
+  <section id="ceo">
+    <p class="sec-label pop">CHARACTER</p>
+    <h2 class="pop">だいひょう</h2>
+    <div class="win pop">
+      <canvas id="ceo-face" width="16" height="18"></canvas>
+      <div class="t">
+        <p class="role">代表取締役</p>
+        <p class="name">大迫 龍太</p>
+        <p>マジシャンで、社長で、なんでも屋。銀座・六本木のマジックバーに出演しながら、公式LINEの構築・開発を手がけています。</p>
+        <a class="btn green" href="https://osako.kaminendo.art/" target="_blank" rel="noopener" style="margin-top:14px">▶ RYU QUESTで代表に会う</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 会社概要 -->
+  <section id="about">
+    <p class="sec-label pop">STATUS</p>
+    <h2 class="pop">かいしゃ がいよう</h2>
+    <div class="win pop">
+      <table class="about-table">
+        <tr><th>社名</th><td>株式会社かみねんど</td></tr>
+        <tr><th>代表者</th><td>代表取締役　大迫 龍太</td></tr>
+        <tr><th>所在地</th><td>東京都葛飾区小菅4丁目21-38</td></tr>
+        <tr><th>設立</th><td>2026年3月31日</td></tr>
+        <tr><th>法人番号</th><td>2011801047648</td></tr>
+        <tr><th>事業内容</th><td>LINE公式アカウントの構築・運用・開発／パフォーマー派遣・演出支援／商品開発・販売／経営コンサルティング</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- お問い合わせ -->
+  <section id="contact">
+    <p class="sec-label pop">TALK</p>
+    <h2 class="pop">おといあわせ</h2>
+    <div class="win pop">
+      <span class="cap">いちばん はやい</span>
+      <p style="font-size:13px;color:#c5cede">ご相談・お見積り・「まず話だけ」も大歓迎です。公式LINEなら そのままトークでやりとりできます。</p>
+      <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener" style="margin-top:14px">▶ 公式LINEで相談する</a>
+    </div>
+    <div class="win pop" style="margin-top:26px">
+      <span class="cap">フォーム</span>
+      <form class="g-form" id="contact-form">
+        <label for="f-name">お名前</label>
+        <input id="f-name" type="text" autocomplete="name">
+        <label for="f-mail">メールアドレス</label>
+        <input id="f-mail" type="email" autocomplete="email">
+        <label for="f-body">ご相談内容</label>
+        <textarea id="f-body" placeholder="例）公式LINEの無料診断を受けたい／イベントでマジックショーをお願いしたい　など"></textarea>
+        <button class="g-send" type="submit">▶ そうしん する</button>
+        <p class="g-note">送信内容は osako@kaminendo.art に届きます。1〜2営業日以内にご返信します。</p>
+      </form>
+      <p id="form-done">＊そうしん かんりょう！<br>へんじが とどくまで しばし またれよ。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>© 2026 株式会社かみねんど</p>
+  <p style="margin-top:6px"><a href="https://osako.kaminendo.art/" target="_blank" rel="noopener">RYU QUEST（代表プロフィール）</a></p>
+</footer>
+
+<div id="confetti"></div>
+<div id="crt"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyXL_oB0pPXNgGJ6Mm1QvQTM9Jz1GOqvcuHahaWvTfketFx7Ucx5j5jgSPtpkMR_fWuNQ/exec';
+
+  /* ---------- 効果音 ---------- */
+  var AC = null, muted = false;
+  function ac(){
+    if (!AC){ try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){} }
+    if (AC && AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  function tone(freq, dur, vol){
+    if (muted) return;
+    var a = ac(); if (!a) return;
+    var o = a.createOscillator(), g = a.createGain();
+    o.type = 'square'; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol || .02, a.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, a.currentTime + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(); o.stop(a.currentTime + dur);
+  }
+  function sndSelect(){ tone(880, .05, .02); setTimeout(function(){ tone(1320, .07, .02); }, 55); }
+  function sndTalk(){ tone(1568, .05, .018); setTimeout(function(){ tone(2093, .08, .018); }, 60); }
+  function sndJingle(){ [523, 659, 784, 1046].forEach(function(f, i){ setTimeout(function(){ tone(f, .13, .022); }, i * 95); }); }
+  var sndBtn = document.getElementById('snd');
+  sndBtn.addEventListener('click', function(){
+    muted = !muted;
+    sndBtn.textContent = muted ? 'おと:OFF' : 'おと:ON';
+    if (!muted) sndSelect();
+  });
+  document.addEventListener('click', function(e){
+    if (e.target.closest('a.btn, .chip, .g-send')) sndSelect();
+  });
+
+  /* ---------- 星空 ---------- */
+  var stars = document.getElementById('stars');
+  for (var i = 0; i < 60; i++){
+    var s = document.createElement('i');
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 100) + '%';
+    s.style.animationDelay = (Math.random() * 2.6) + 's';
+    stars.appendChild(s);
+  }
+
+  /* ---------- ヒーローのタイプライター ---------- */
+  var vision = document.getElementById('vision');
+  var VISION_TEXT = 'クリエイティブで 心を豊かにする。';
+  var vi = 0;
+  var vTimer = setInterval(function(){
+    vision.textContent += VISION_TEXT.charAt(vi);
+    if (vi % 3 === 0) tone(1750, .03, .008);
+    vi++;
+    if (vi >= VISION_TEXT.length) clearInterval(vTimer);
+  }, 60);
+
+  /* ---------- スクロールで出現 ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add('shown'); io.unobserve(en.target); }
+    });
+  }, { threshold: .15 });
+  document.querySelectorAll('.pop').forEach(function(el){ io.observe(el); });
+
+  /* ---------- ドット絵キャラ（ヒーロー窓の上をうろうろ） ---------- */
+  var CH_PAL = { k:'#1b1f27', s:'#f0c8a2', j:'#2b3352', w:'#ffffff', g:'#00a063', r:'#c9795f', d:'#3a415c' };
+  var CH_FRAMES = [
+    ['....kkkkkk......','...kkkkkkkkk....','..kkkkkkkkkkk...','..kkkkkkkkkkk...','..kkkssssssk....','..kksssssssss...','..kksskssksss...','..kksssssssss...','...kssssrss.....','....sssssss.....','....kjjjjjk.....','...jjjwwjjjj....','...jjjwwgjjs....','...sjjwwjjj.....','....djjjjd......','....dd..dd......','...dd....dd.....','..kk......kk....'],
+    ['................','....kkkkkk......','...kkkkkkkkk....','..kkkkkkkkkkk...','..kkkkkkkkkkk...','..kkkssssssk....','..kksssssssss...','..kksskssksss...','..kksssssssss...','...kssssrss.....','....sssssss.....','....kjjjjjk.....','...jjjwwjjjj....','...sjjwwgjjs....','....djjjjd......','....dddddd......','.....dd.dd......','....kk..kk......']
+  ];
+  function drawSprite(canvas, fi){
+    var ctx = canvas.getContext('2d');
+    var rows = CH_FRAMES[fi];
+    ctx.clearRect(0, 0, 16, 18);
+    for (var y = 0; y < rows.length; y++){
+      for (var x = 0; x < 16; x++){
+        var c = rows[y].charAt(x);
+        if (CH_PAL[c]){ ctx.fillStyle = CH_PAL[c]; ctx.fillRect(x, y, 1, 1); }
+      }
+    }
+  }
+  var chara = document.getElementById('chara');
+  drawSprite(document.getElementById('ceo-face'), 1);
+  var ch = { x: 18, dir: 1, tick: 0, pauseUntil: 0 };
+  setInterval(function(){
+    ch.tick++;
+    if (Date.now() < ch.pauseUntil){ drawSprite(chara, 1); }
+    else {
+      ch.x += ch.dir * 1.4;
+      var maxX = Math.min(220, document.getElementById('hero').clientWidth * .55);
+      if (ch.x <= 14){ ch.x = 14; ch.dir = 1; if (Math.random() < .4) ch.pauseUntil = Date.now() + 1400 + Math.random() * 1600; }
+      else if (ch.x >= maxX){ ch.x = maxX; ch.dir = -1; if (Math.random() < .4) ch.pauseUntil = Date.now() + 1400 + Math.random() * 1600; }
+      drawSprite(chara, (ch.tick >> 1) & 1);
+    }
+    chara.style.left = ch.x + 'px';
+    chara.style.transform = ch.dir < 0 ? 'scaleX(-1)' : '';
+  }, 110);
+
+  /* さわると ひとこと */
+  var say = document.getElementById('chara-say');
+  var QUIPS = [
+    'わっ！ びっくりした！',
+    'ようこそ かみねんどへ！',
+    '公式LINEの無料診断、おすすめだぞ。',
+    '僕のことは RYU QUEST で…！',
+    'きょうも いい まほうびよりだ。'
+  ];
+  var sayTimer = null;
+  chara.addEventListener('click', function(){
+    sndTalk();
+    if (navigator.vibrate){ try { navigator.vibrate(10); } catch(e){} }
+    ch.pauseUntil = Date.now() + 2600;
+    say.textContent = '＊' + QUIPS[Math.floor(Math.random() * QUIPS.length)];
+    say.style.display = 'block';
+    say.style.left = (ch.x + 52) + 'px';
+    if (sayTimer) clearTimeout(sayTimer);
+    sayTimer = setTimeout(function(){ say.style.display = 'none'; }, 2400);
+  });
+
+  /* ---------- お問い合わせ（GAS直接送信＋mailtoフォールバック） ---------- */
+  var conf = document.getElementById('confetti');
+  (function(){
+    var colors = ['#ffd76a', '#8ef0b4', '#9fe8ff', '#ff9db0', '#ffffff'];
+    for (var i = 0; i < 32; i++){
+      var f = document.createElement('i');
+      f.style.left = (Math.random() * 100) + '%';
+      f.style.background = colors[i % colors.length];
+      f.style.animationDuration = (2.2 + Math.random() * 2.2) + 's';
+      f.style.animationDelay = (Math.random() * 2) + 's';
+      conf.appendChild(f);
+    }
+  })();
+  document.getElementById('contact-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('f-name').value.trim();
+    var mail = document.getElementById('f-mail').value.trim();
+    var body = document.getElementById('f-body').value.trim();
+    var text = 'お名前: ' + (name || '（未記入）') + '\nメール: ' + (mail || '（未記入）') + '\n\nご相談内容:\n' + (body || '（未記入）') + '\n\n— 会社サイト（kaminendo.art）のフォームから送信';
+    var subject = '【会社サイトから】お問い合わせ' + (name ? '（' + name + '様）' : '');
+    var form = this;
+    var btn = form.querySelector('.g-send');
+    var finish = function(useMailApp){
+      if (useMailApp){
+        try {
+          var a = document.createElement('a');
+          a.href = 'mailto:osako@kaminendo.art?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text);
+          a.style.display = 'none'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        } catch(err){}
+      }
+      form.style.display = 'none';
+      document.getElementById('form-done').style.display = 'block';
+      conf.classList.add('on');
+      sndJingle();
+      setTimeout(function(){ conf.classList.remove('on'); }, 6000);
+    };
+    btn.disabled = true; btn.textContent = 'そうしん ちゅう…';
+    var done = false;
+    var settle = function(useMail){ if (done) return; done = true; finish(useMail); };
+    var timer = setTimeout(function(){ settle(true); }, 9000);
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ name: name, email: mail, body: body, page: location.href })
+    }).then(function(r){ return r.json(); })
+      .then(function(j){ clearTimeout(timer); settle(!(j && j.ok)); })
+      .catch(function(){ clearTimeout(timer); settle(true); });
+  });
+})();
+</script>
+</body>
+</html>
