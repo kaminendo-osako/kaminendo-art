@@ -79,6 +79,21 @@ nav a.chip:hover{color:var(--gold)}
 @media (max-width:380px){
   nav .chip{font-size:10px;padding:2px 6px}
 }
+.brand{display:flex;align-items:center;text-decoration:none}
+.brand img{height:24px;width:auto;display:block}
+
+/* 中途半端な改行を防ぐ */
+h1,h2,h3{text-wrap:balance}
+.hero-copy,.biz p,#ceo p{text-wrap:pretty}
+.btn{white-space:nowrap}
+
+/* EXPバー（スクロール進行度） */
+#expbar{
+  position:fixed;top:0;left:0;z-index:95;height:4px;width:0;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  box-shadow:0 0 8px rgba(142,240,180,.6);
+  transition:width .15s linear;
+}
 
 /* レイアウト */
 main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 16px 80px}
@@ -108,12 +123,13 @@ h2{font-size:clamp(22px,5.5vw,28px);letter-spacing:.1em;margin-bottom:22px}
 .btn.primary{border-color:var(--line);color:#fff;background:var(--line)}
 .btn.gold{border-color:var(--gold);color:var(--gold)}
 .btn.green{border-color:var(--green);color:var(--green)}
+/* スクロールについてくるドット絵キャラ（画面下をあるく） */
 #chara{
-  position:absolute;left:18px;top:-52px;z-index:5;
+  position:fixed;left:12px;bottom:6px;z-index:70;
   width:48px;height:54px;image-rendering:pixelated;cursor:pointer;
 }
 #chara-say{
-  position:absolute;left:70px;top:-46px;z-index:5;display:none;
+  position:fixed;bottom:64px;left:64px;z-index:70;display:none;
   background:#000;border:2px solid #fff;border-radius:6px;
   font-size:11px;padding:4px 10px;white-space:nowrap;
 }
@@ -184,7 +200,7 @@ footer a{color:var(--cyan);text-decoration:none}
 <div id="stars"></div>
 
 <header>
-  <a class="chip" href="#top">かみねんど</a>
+  <a class="brand" href="#top"><img src="assets/logo_white.png" alt="株式会社かみねんど"></a>
   <nav>
     <a class="chip" href="#biz">じぎょう</a>
     <a class="chip" href="#ceo">だいひょう</a>
@@ -198,18 +214,14 @@ footer a{color:var(--cyan);text-decoration:none}
 
   <!-- ヒーロー -->
   <section id="hero">
-    <canvas id="chara" width="16" height="18" title="…？"></canvas>
-    <span id="chara-say"></span>
     <div class="win">
       <span class="cap">KAMINENDO Inc.</span>
       <h1 class="hero-name">株式会社<br>かみねんど</h1>
       <p class="hero-vision" id="vision"></p>
-      <p class="hero-copy">
-        発想力・技術力・演出力を かけあわせて、あたらしい価値をつくる会社です。<br>
-        マジックの「驚き」と テクノロジーの「仕組み」で、あなたのビジネスを進化させます。
-      </p>
+      <p class="hero-copy">発想力・技術力・演出力を かけあわせて、あたらしい価値をつくる会社です。</p>
+      <p class="hero-copy" style="margin-top:6px">マジックの「驚き」と テクノロジーの「仕組み」で、あなたのビジネスを進化させます。</p>
       <div class="cta-row">
-        <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener">▶ 公式LINEで無料診断</a>
+        <a class="btn primary" href="https://line.me/R/ti/p/@687czsmv" target="_blank" rel="noopener">▶ 公式LINEで無料診断</a>
         <a class="btn" href="#contact">✉ お問い合わせ</a>
       </div>
     </div>
@@ -231,7 +243,7 @@ footer a{color:var(--cyan);text-decoration:none}
           <li>機能開発 — 業務に合わせた機能でLINEの可能性を広げる</li>
         </ul>
         <p style="margin-top:12px">まずは<b style="color:var(--gold)">無料アカウント診断</b>から。10ページ超えの改善レポートを無料でお渡しします（しつこい営業は一切なし）。</p>
-        <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener">▶ 無料診断をうける</a>
+        <a class="btn primary" href="https://line.me/R/ti/p/@687czsmv" target="_blank" rel="noopener">▶ 無料診断をうける</a>
       </div>
       <div class="win pop">
         <span class="cap">クエスト</span>
@@ -292,7 +304,7 @@ footer a{color:var(--cyan);text-decoration:none}
     <div class="win pop">
       <span class="cap">いちばん はやい</span>
       <p style="font-size:13px;color:#c5cede">ご相談・お見積り・「まず話だけ」も大歓迎です。公式LINEなら そのままトークでやりとりできます。</p>
-      <a class="btn primary" href="https://line.me/R/ti/p/@353wsppj" target="_blank" rel="noopener" style="margin-top:14px">▶ 公式LINEで相談する</a>
+      <a class="btn primary" href="https://line.me/R/ti/p/@687czsmv" target="_blank" rel="noopener" style="margin-top:14px">▶ 公式LINEで相談する</a>
     </div>
     <div class="win pop" style="margin-top:26px">
       <span class="cap">フォーム</span>
@@ -317,6 +329,9 @@ footer a{color:var(--cyan);text-decoration:none}
   <p style="margin-top:6px"><a href="https://osako.kaminendo.art/" target="_blank" rel="noopener">RYU QUEST（代表プロフィール）</a></p>
 </footer>
 
+<canvas id="chara" width="16" height="18" title="…？"></canvas>
+<span id="chara-say"></span>
+<div id="expbar"></div>
 <div id="confetti"></div>
 <div id="crt"></div>
 
@@ -358,10 +373,10 @@ footer a{color:var(--cyan);text-decoration:none}
 
   /* ---------- 星空 ---------- */
   var stars = document.getElementById('stars');
-  for (var i = 0; i < 60; i++){
+  for (var i = 0; i < 80; i++){
     var s = document.createElement('i');
     s.style.left = (Math.random() * 100) + '%';
-    s.style.top = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 170) + '%'; /* パララックス移動ぶんを下に余分に配置 */
     s.style.animationDelay = (Math.random() * 2.6) + 's';
     stars.appendChild(s);
   }
@@ -404,20 +419,48 @@ footer a{color:var(--cyan);text-decoration:none}
   }
   var chara = document.getElementById('chara');
   drawSprite(document.getElementById('ceo-face'), 1);
-  var ch = { x: 18, dir: 1, tick: 0, pauseUntil: 0 };
+  drawSprite(chara, 1);
+
+  /* スクロールに合わせて画面下をあるく（ページの進みぐあい＝立ち位置） */
+  var ch = { x: 12, target: 12, dir: 1, tick: 0, hopUntil: 0 };
+  var expbar = document.getElementById('expbar');
+  var expDone = false;
+  function scrollProgress(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? Math.min(1, window.scrollY / max) : 0;
+  }
+  function onScroll(){
+    var p = scrollProgress();
+    expbar.style.width = (p * 100) + '%';
+    ch.target = 12 + p * (window.innerWidth - 48 - 24);
+    stars.style.transform = 'translateY(' + (-window.scrollY * 0.15) + 'px)';
+    if (p >= 0.995 && !expDone){
+      expDone = true; /* さいごまで読んでくれたら おいわい */
+      sndJingle();
+      say.textContent = '＊さいごまで よんでくれて ありがとう！';
+      say.style.display = 'block';
+      positionSay();
+      if (sayTimer) clearTimeout(sayTimer);
+      sayTimer = setTimeout(function(){ say.style.display = 'none'; }, 3000);
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
   setInterval(function(){
     ch.tick++;
-    if (Date.now() < ch.pauseUntil){ drawSprite(chara, 1); }
-    else {
-      ch.x += ch.dir * 1.4;
-      var maxX = Math.min(220, document.getElementById('hero').clientWidth * .55);
-      if (ch.x <= 14){ ch.x = 14; ch.dir = 1; if (Math.random() < .4) ch.pauseUntil = Date.now() + 1400 + Math.random() * 1600; }
-      else if (ch.x >= maxX){ ch.x = maxX; ch.dir = -1; if (Math.random() < .4) ch.pauseUntil = Date.now() + 1400 + Math.random() * 1600; }
-      drawSprite(chara, (ch.tick >> 1) & 1);
+    var dx = ch.target - ch.x;
+    if (Math.abs(dx) > 2){
+      ch.dir = dx > 0 ? 1 : -1;
+      ch.x += Math.max(-14, Math.min(14, dx * 0.4));
+      drawSprite(chara, (ch.tick >> 1) & 1); /* あるきモーション */
+    } else {
+      drawSprite(chara, 1); /* たちどまる */
     }
     chara.style.left = ch.x + 'px';
-    chara.style.transform = ch.dir < 0 ? 'scaleX(-1)' : '';
+    var hop = Date.now() < ch.hopUntil ? ' translateY(-8px)' : '';
+    chara.style.transform = (ch.dir < 0 ? 'scaleX(-1)' : '') + hop;
   }, 110);
+  onScroll();
 
   /* さわると ひとこと */
   var say = document.getElementById('chara-say');
@@ -426,16 +469,24 @@ footer a{color:var(--cyan);text-decoration:none}
     'ようこそ かみねんどへ！',
     '公式LINEの無料診断、おすすめだぞ。',
     '僕のことは RYU QUEST で…！',
-    'きょうも いい まほうびよりだ。'
+    'きょうも いい まほうびよりだ。',
+    'スクロールすると 僕も すすむぞ。',
+    'うえの みどりのバーは 「よんだりょう」だ。'
   ];
   var sayTimer = null;
+  function positionSay(){
+    /* キャラが右寄りのときは 吹き出しを左側に出す */
+    var w = say.offsetWidth || 180;
+    var left = ch.x > window.innerWidth / 2 ? ch.x - w - 8 : ch.x + 52;
+    say.style.left = Math.max(8, Math.min(left, window.innerWidth - w - 8)) + 'px';
+  }
   chara.addEventListener('click', function(){
     sndTalk();
     if (navigator.vibrate){ try { navigator.vibrate(10); } catch(e){} }
-    ch.pauseUntil = Date.now() + 2600;
+    ch.hopUntil = Date.now() + 240; /* ぴょん */
     say.textContent = '＊' + QUIPS[Math.floor(Math.random() * QUIPS.length)];
     say.style.display = 'block';
-    say.style.left = (ch.x + 52) + 'px';
+    positionSay();
     if (sayTimer) clearTimeout(sayTimer);
     sayTimer = setTimeout(function(){ say.style.display = 'none'; }, 2400);
   });
