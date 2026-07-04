@@ -80,20 +80,71 @@ nav a.chip:hover{color:var(--gold)}
   nav .chip{font-size:10px;padding:2px 6px}
 }
 .brand{display:flex;align-items:center;text-decoration:none}
-.brand img{height:24px;width:auto;display:block}
+.brand img{height:44px;width:auto;display:block}
+@media (max-width:380px){ .brand img{height:36px} }
 
 /* 中途半端な改行を防ぐ */
 h1,h2,h3{text-wrap:balance}
 .hero-copy,.biz p,#ceo p{text-wrap:pretty}
 .btn{white-space:nowrap}
 
-/* EXPバー（スクロール進行度） */
-#expbar{
-  position:fixed;top:0;left:0;z-index:95;height:4px;width:0;
-  background:linear-gradient(90deg,var(--green),var(--cyan));
-  box-shadow:0 0 8px rgba(142,240,180,.6);
-  transition:width .15s linear;
+/* EXP HUD（スクロール＝経験値。右下に常駐、レベルアップ演出つき） */
+#hud{
+  position:fixed;bottom:10px;right:10px;z-index:70;
+  display:flex;align-items:center;gap:7px;
+  background:rgba(0,0,0,.88);border:2px solid #fff;border-radius:6px;
+  padding:5px 9px;font-size:10.5px;letter-spacing:.08em;
+  box-shadow:0 0 0 2px #000;
 }
+#hud-lv{color:var(--gold);min-width:3.2em}
+#hud-bar{width:72px;height:9px;border:1px solid #fff;border-radius:2px;overflow:hidden;background:#101624;position:relative}
+#hud-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .15s linear}
+#hud-bar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(0,0,0,.5) 8px 9px)}
+#hud-exp{color:var(--cyan);min-width:5.4em;text-align:right;font-variant-numeric:tabular-nums}
+#lvup{
+  position:fixed;bottom:46px;right:14px;z-index:71;pointer-events:none;
+  color:var(--gold);font-size:14px;letter-spacing:.18em;
+  text-shadow:0 0 10px rgba(255,215,106,.9), 1px 1px 0 #000;
+  opacity:0;
+}
+#lvup.go{animation:lvupfx 1.1s ease forwards}
+@keyframes lvupfx{0%{opacity:0;transform:translateY(10px) scale(.8)}18%{opacity:1;transform:translateY(0) scale(1.1)}40%{transform:translateY(-4px) scale(1)}75%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
+
+/* ======== オープニング（CRT起動→パーティクルでロゴ組み上げ→タップで入場） ======== */
+#opening{
+  position:fixed;inset:0;z-index:200;background:#000;overflow:hidden;cursor:pointer;
+  transition:opacity .7s ease;
+}
+#opening.leaving{opacity:0}
+#opening.done{display:none}
+#crtline{
+  position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;
+  background:#fff;box-shadow:0 0 30px 6px rgba(255,255,255,.9);
+  transform:scaleX(0);opacity:0;
+}
+#opening.p1 #crtline{animation:crtOn 1s ease forwards}
+@keyframes crtOn{
+  0%{transform:scaleX(0) scaleY(1);opacity:1}
+  40%{transform:scaleX(1) scaleY(1);opacity:1}
+  75%{transform:scaleX(1) scaleY(220);opacity:.35}
+  100%{transform:scaleX(1) scaleY(400);opacity:0}
+}
+#boot{
+  position:absolute;top:14%;left:9%;right:9%;
+  font-size:12px;line-height:2.1;color:var(--green);
+  white-space:pre-wrap;text-shadow:0 0 6px rgba(142,240,180,.5);
+  opacity:0;
+}
+#opening.p2 #boot{opacity:1}
+#boot .cur{animation:blinkStart .6s steps(1) infinite}
+#op-canvas{position:absolute;inset:0}
+#op-start{
+  position:absolute;bottom:15%;left:0;right:0;text-align:center;
+  font-size:15px;letter-spacing:.3em;color:#fff;opacity:0;
+  text-shadow:0 0 10px rgba(159,232,255,.8);
+}
+#opening.ready #op-start{opacity:1;animation:blinkStart 1s steps(1) infinite}
+@keyframes blinkStart{0%,60%{opacity:1}61%,100%{opacity:0}}
 
 /* レイアウト */
 main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 16px 80px}
@@ -331,9 +382,25 @@ footer a{color:var(--cyan);text-decoration:none}
 
 <canvas id="chara" width="16" height="18" title="…？"></canvas>
 <span id="chara-say"></span>
-<div id="expbar"></div>
+
+<!-- EXP HUD -->
+<div id="hud">
+  <span id="hud-lv">LV1</span>
+  <span id="hud-bar"><i id="hud-fill"></i></span>
+  <span id="hud-exp">EXP 0</span>
+</div>
+<div id="lvup">LEVEL UP!</div>
+
 <div id="confetti"></div>
 <div id="crt"></div>
+
+<!-- オープニング -->
+<div id="opening">
+  <div id="crtline"></div>
+  <div id="boot"></div>
+  <canvas id="op-canvas"></canvas>
+  <div id="op-start">▶ TOUCH TO START</div>
+</div>
 
 <script>
 (function(){
@@ -361,6 +428,8 @@ footer a{color:var(--cyan);text-decoration:none}
   function sndSelect(){ tone(880, .05, .02); setTimeout(function(){ tone(1320, .07, .02); }, 55); }
   function sndTalk(){ tone(1568, .05, .018); setTimeout(function(){ tone(2093, .08, .018); }, 60); }
   function sndJingle(){ [523, 659, 784, 1046].forEach(function(f, i){ setTimeout(function(){ tone(f, .13, .022); }, i * 95); }); }
+  function sndLvUp(){ [659, 784, 988, 1319].forEach(function(f, i){ setTimeout(function(){ tone(f, .1, .022); }, i * 70); }); }
+  function sndEnter(){ [392, 523, 659, 784, 1046, 1319].forEach(function(f, i){ setTimeout(function(){ tone(f, .11, .024); }, i * 65); }); }
   var sndBtn = document.getElementById('snd');
   sndBtn.addEventListener('click', function(){
     muted = !muted;
@@ -381,16 +450,21 @@ footer a{color:var(--cyan);text-decoration:none}
     stars.appendChild(s);
   }
 
-  /* ---------- ヒーローのタイプライター ---------- */
-  var vision = document.getElementById('vision');
-  var VISION_TEXT = 'クリエイティブで 心を豊かにする。';
-  var vi = 0;
-  var vTimer = setInterval(function(){
-    vision.textContent += VISION_TEXT.charAt(vi);
-    if (vi % 3 === 0) tone(1750, .03, .008);
-    vi++;
-    if (vi >= VISION_TEXT.length) clearInterval(vTimer);
-  }, 60);
+  /* ---------- ヒーローのタイプライター（オープニング入場後にはじまる） ---------- */
+  var heroStarted = false;
+  function startHero(){
+    if (heroStarted) return;
+    heroStarted = true;
+    var vision = document.getElementById('vision');
+    var VISION_TEXT = 'クリエイティブで 心を豊かにする。';
+    var vi = 0;
+    var vTimer = setInterval(function(){
+      vision.textContent += VISION_TEXT.charAt(vi);
+      if (vi % 3 === 0) tone(1750, .03, .008);
+      vi++;
+      if (vi >= VISION_TEXT.length) clearInterval(vTimer);
+    }, 60);
+  }
 
   /* ---------- スクロールで出現 ---------- */
   var io = new IntersectionObserver(function(entries){
@@ -423,21 +497,38 @@ footer a{color:var(--cyan);text-decoration:none}
 
   /* スクロールに合わせて画面下をあるく（ページの進みぐあい＝立ち位置） */
   var ch = { x: 12, target: 12, dir: 1, tick: 0, hopUntil: 0 };
-  var expbar = document.getElementById('expbar');
-  var expDone = false;
+  var hudLv = document.getElementById('hud-lv');
+  var hudFill = document.getElementById('hud-fill');
+  var hudExp = document.getElementById('hud-exp');
+  var lvupEl = document.getElementById('lvup');
+  var prevLv = 1, expDone = false;
   function scrollProgress(){
     var max = document.documentElement.scrollHeight - window.innerHeight;
     return max > 0 ? Math.min(1, window.scrollY / max) : 0;
   }
+  function levelUpFx(lv){
+    lvupEl.textContent = 'LEVEL UP!  LV' + lv;
+    lvupEl.classList.remove('go');
+    void lvupEl.offsetWidth;
+    lvupEl.classList.add('go');
+    sndLvUp();
+    if (navigator.vibrate){ try { navigator.vibrate([12, 40, 12]); } catch(e){} }
+  }
   function onScroll(){
     var p = scrollProgress();
-    expbar.style.width = (p * 100) + '%';
+    /* EXP＝よんだりょう。20%ごとにレベルアップ */
+    var lv = Math.min(5, 1 + Math.floor(p * 5));
+    hudFill.style.width = (p * 100) + '%';
+    hudExp.textContent = 'EXP ' + Math.round(p * 9999);
+    hudLv.textContent = p >= 0.995 ? 'LV MAX' : 'LV' + lv;
+    if (lv > prevLv){ prevLv = lv; levelUpFx(lv); }
+    else if (lv < prevLv){ prevLv = lv; }
     ch.target = 12 + p * (window.innerWidth - 48 - 24);
     stars.style.transform = 'translateY(' + (-window.scrollY * 0.15) + 'px)';
     if (p >= 0.995 && !expDone){
       expDone = true; /* さいごまで読んでくれたら おいわい */
       sndJingle();
-      say.textContent = '＊さいごまで よんでくれて ありがとう！';
+      say.textContent = '＊LV MAX！ さいごまで よんでくれて ありがとう！';
       say.style.display = 'block';
       positionSay();
       if (sayTimer) clearTimeout(sayTimer);
@@ -539,6 +630,149 @@ footer a{color:var(--cyan);text-decoration:none}
       .then(function(j){ clearTimeout(timer); settle(!(j && j.ok)); })
       .catch(function(){ clearTimeout(timer); settle(true); });
   });
+
+  /* ==================================================================
+     オープニング：CRT起動 → 起動シーケンス → 粒子がロゴを組み上げる
+     → TOUCH TO START → 粒子爆散で入場
+     ================================================================== */
+  (function(){
+    var op = document.getElementById('opening');
+    var boot = document.getElementById('boot');
+    var canvas = document.getElementById('op-canvas');
+    var ctx = canvas.getContext('2d');
+    var mode = 'wait'; /* wait → gather → formed → explode */
+    var parts = [];
+    var frame = 0;
+    var COLORS = ['#ffffff', '#ffffff', '#ffffff', '#ffffff', '#8ef0b4', '#9fe8ff', '#ffd76a'];
+
+    document.body.style.overflow = 'hidden'; /* オープニング中はスクロール禁止 */
+
+    function fit(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    fit();
+    window.addEventListener('resize', fit);
+
+    /* ロゴ画像のピクセルから粒子のターゲット座標を作る */
+    var img = new Image();
+    img.onload = function(){
+      var w = Math.min(320, window.innerWidth * 0.84);
+      var scale = w / img.width;
+      var off = document.createElement('canvas');
+      off.width = Math.round(img.width * scale);
+      off.height = Math.round(img.height * scale);
+      var octx = off.getContext('2d');
+      octx.drawImage(img, 0, 0, off.width, off.height);
+      var data = octx.getImageData(0, 0, off.width, off.height).data;
+      var ox = (window.innerWidth - off.width) / 2;
+      var oy = (window.innerHeight - off.height) / 2 - 14;
+      for (var y = 0; y < off.height; y += 2){
+        for (var x = 0; x < off.width; x += 2){
+          if (data[(y * off.width + x) * 4 + 3] > 128){
+            var edge = Math.floor(Math.random() * 4);
+            parts.push({
+              tx: ox + x, ty: oy + y,
+              x: edge < 2 ? (edge === 0 ? -20 : window.innerWidth + 20) : Math.random() * window.innerWidth,
+              y: edge < 2 ? Math.random() * window.innerHeight : (edge === 2 ? -20 : window.innerHeight + 20),
+              vx: 0, vy: 0,
+              d: Math.random() * 46,
+              c: COLORS[Math.floor(Math.random() * COLORS.length)]
+            });
+          }
+        }
+      }
+    };
+    img.src = 'assets/logo_white.png';
+
+    function loop(){
+      if (op.classList.contains('done')) return;
+      requestAnimationFrame(loop);
+      frame++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < parts.length; i++){
+        var p = parts[i];
+        if (mode === 'gather'){
+          if (p.d > 0){ p.d--; }
+          else { p.x += (p.tx - p.x) * 0.1; p.y += (p.ty - p.y) * 0.1; }
+        } else if (mode === 'formed'){
+          p.x = p.tx; p.y = p.ty;
+        } else if (mode === 'explode'){
+          p.x += p.vx; p.y += p.vy; p.vy += 0.45; p.vx *= 0.99;
+        }
+        ctx.fillStyle = (mode === 'formed' && Math.random() < 0.008) ? '#ffd76a' : p.c;
+        ctx.fillRect(p.x, p.y, 2, 2);
+      }
+    }
+    requestAnimationFrame(loop);
+
+    /* 起動シーケンス（タイプ表示） */
+    var BOOT_LINES = [
+      'KAMINENDO SYSTEM ver.2026',
+      'MEMORY CHECK ............ OK',
+      'まほうエンジン .......... OK',
+      'そうぞうりょく .......... ∞',
+      '',
+      'READY.'
+    ];
+    var bootSkipped = false;
+    function typeBoot(li, chi){
+      if (bootSkipped || mode !== 'wait') return;
+      if (li >= BOOT_LINES.length){ startGather(); return; }
+      var shown = BOOT_LINES.slice(0, li).join('\n');
+      var line = BOOT_LINES[li].slice(0, chi);
+      boot.innerHTML = '';
+      boot.textContent = shown + (shown ? '\n' : '') + line;
+      var cur = document.createElement('span');
+      cur.className = 'cur'; cur.textContent = '▌';
+      boot.appendChild(cur);
+      if (chi < BOOT_LINES[li].length) setTimeout(function(){ typeBoot(li, chi + 1); }, 14);
+      else setTimeout(function(){ typeBoot(li + 1, 0); }, 110);
+    }
+    function startGather(){
+      if (mode !== 'wait') return;
+      mode = 'gather';
+      setTimeout(function(){
+        mode = 'formed';
+        op.classList.add('ready');
+      }, 2100);
+    }
+
+    op.classList.add('p1'); /* CRT電源ON */
+    setTimeout(function(){
+      op.classList.add('p2');
+      typeBoot(0, 0);
+    }, 950);
+
+    /* タップ：演出中ならスキップ、完成後なら入場 */
+    op.addEventListener('click', function(){
+      ac(); /* 効果音を解禁 */
+      if (mode === 'wait'){
+        bootSkipped = true;
+        boot.textContent = BOOT_LINES.join('\n');
+        startGather();
+        return;
+      }
+      if (mode === 'gather'){
+        parts.forEach(function(p){ p.d = 0; });
+        return;
+      }
+      if (mode !== 'formed') return;
+      mode = 'explode';
+      sndEnter();
+      if (navigator.vibrate){ try { navigator.vibrate([15, 30, 15]); } catch(e){} }
+      parts.forEach(function(p){
+        var a = Math.random() * Math.PI * 2;
+        var s = 4 + Math.random() * 11;
+        p.vx = Math.cos(a) * s;
+        p.vy = Math.sin(a) * s - 4;
+      });
+      op.classList.add('leaving');
+      setTimeout(function(){
+        op.classList.add('done');
+        document.body.style.overflow = '';
+        startHero();
+        onScroll();
+      }, 700);
+    });
+  })();
 })();
 </script>
 </body>
