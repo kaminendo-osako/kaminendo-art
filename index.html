@@ -198,7 +198,7 @@ h2{font-size:clamp(22px,5.5vw,28px);letter-spacing:.1em;margin-bottom:22px}
 
 /* 代表 */
 #ceo .win{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-#ceo-face{width:96px;height:108px;image-rendering:pixelated;flex:0 0 auto;border:2px solid #fff;border-radius:6px;background:#0a0f1e}
+#ceo-face,#fukui-face{width:96px;height:108px;image-rendering:pixelated;flex:0 0 auto;border:2px solid #fff;border-radius:6px;background:#0a0f1e}
 #ceo .t{flex:1;min-width:200px}
 #ceo .name{font-size:20px;letter-spacing:.1em}
 #ceo .role{font-size:11.5px;color:var(--cyan)}
@@ -254,7 +254,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <a class="brand" href="#top"><img src="assets/logo_white.png" alt="株式会社かみねんど"></a>
   <nav>
     <a class="chip" href="#biz">じぎょう</a>
-    <a class="chip" href="#ceo">だいひょう</a>
+    <a class="chip" href="#ceo">やくいん</a>
     <a class="chip" href="#about">かいしゃ</a>
     <a class="chip" href="#contact">といあわせ</a>
     <button class="chip" id="snd" type="button">おと:ON</button>
@@ -317,10 +317,10 @@ footer a{color:var(--cyan);text-decoration:none}
     </div>
   </section>
 
-  <!-- 代表 -->
+  <!-- 役員紹介 -->
   <section id="ceo">
-    <p class="sec-label pop">CHARACTER</p>
-    <h2 class="pop">だいひょう</h2>
+    <p class="sec-label pop">CHARACTERS</p>
+    <h2 class="pop">やくいん しょうかい</h2>
     <div class="win pop">
       <canvas id="ceo-face" width="16" height="18"></canvas>
       <div class="t">
@@ -328,6 +328,15 @@ footer a{color:var(--cyan);text-decoration:none}
         <p class="name">大迫 龍太</p>
         <p>マジシャンで、社長で、なんでも屋。銀座・六本木のマジックバーに出演しながら、公式LINEの構築・開発を手がけています。</p>
         <a class="btn green" href="https://osako.kaminendo.art/" target="_blank" rel="noopener" style="margin-top:14px">▶ RYU QUESTで代表に会う</a>
+      </div>
+    </div>
+    <div class="win pop" style="margin-top:26px">
+      <canvas id="fukui-face" width="16" height="18"></canvas>
+      <div class="t">
+        <p class="role">執行役員</p>
+        <p class="name">福井 創祈</p>
+        <p>えいぎょうと、こだわりの、おとこ。釣具店起業からIT営業まで現場を渡り歩き、いまは公式LINEの構築・運用・機能開発を担当しています。</p>
+        <a class="btn gold" href="https://fukui.kaminendo.art/" target="_blank" rel="noopener" style="margin-top:14px">▶ FUKUI QUESTで福井に会う</a>
       </div>
     </div>
   </section>
@@ -480,19 +489,44 @@ footer a{color:var(--cyan);text-decoration:none}
     ['....kkkkkk......','...kkkkkkkkk....','..kkkkkkkkkkk...','..kkkkkkkkkkk...','..kkkssssssk....','..kksssssssss...','..kksskssksss...','..kksssssssss...','...kssssrss.....','....sssssss.....','....kjjjjjk.....','...jjjwwjjjj....','...jjjwwgjjs....','...sjjwwjjj.....','....djjjjd......','....dd..dd......','...dd....dd.....','..kk......kk....'],
     ['................','....kkkkkk......','...kkkkkkkkk....','..kkkkkkkkkkk...','..kkkkkkkkkkk...','..kkkssssssk....','..kksssssssss...','..kksskssksss...','..kksssssssss...','...kssssrss.....','....sssssss.....','....kjjjjjk.....','...jjjwwjjjj....','...sjjwwgjjs....','....djjjjd......','....dddddd......','.....dd.dd......','....kk..kk......']
   ];
-  function drawSprite(canvas, fi){
+  function drawRows(canvas, rows, pal){
     var ctx = canvas.getContext('2d');
-    var rows = CH_FRAMES[fi];
     ctx.clearRect(0, 0, 16, 18);
     for (var y = 0; y < rows.length; y++){
       for (var x = 0; x < 16; x++){
         var c = rows[y].charAt(x);
-        if (CH_PAL[c]){ ctx.fillStyle = CH_PAL[c]; ctx.fillRect(x, y, 1, 1); }
+        if (pal[c]){ ctx.fillStyle = pal[c]; ctx.fillRect(x, y, 1, 1); }
       }
     }
   }
+  function drawSprite(canvas, fi){ drawRows(canvas, CH_FRAMES[fi], CH_PAL); }
+
+  /* 福井の立ちポーズ（髪ブラウン・チーフえんじ） */
+  var CH_PAL_F = { k:'#1b1f27', h:'#6e4b2a', s:'#f0c8a2', j:'#2b3352', w:'#ffffff', g:'#7a1f2b', r:'#c9795f', d:'#3a415c' };
+  var FUKUI_STAND = [
+    '................',
+    '....hhhhhh......',
+    '...hhhhhhhhh....',
+    '..hhhhhhhhhhh...',
+    '..hhhhhhhhhhh...',
+    '..hhhssssssh....',
+    '..hhsssssssss...',
+    '..hhsskssksss...',
+    '..hhsssssssss...',
+    '...hssssrss.....',
+    '....sssssss.....',
+    '....kjjjjjk.....',
+    '...jjjwwjjjj....',
+    '...sjjwwgjjs....',
+    '....djjjjd......',
+    '....dddddd......',
+    '.....dd.dd......',
+    '....kk..kk......'
+  ];
+
   var chara = document.getElementById('chara');
   drawSprite(document.getElementById('ceo-face'), 1);
+  drawRows(document.getElementById('fukui-face'), FUKUI_STAND, CH_PAL_F);
   drawSprite(chara, 1);
 
   /* スクロールに合わせて画面下をあるく（ページの進みぐあい＝立ち位置） */
