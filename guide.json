@@ -1,0 +1,10 @@
+{
+  "_note": "このファイルを編集して git push すると、アプリの解説内容が更新されます(アプリの再審査は不要)。youtube には動画IDのみを入れる(例: https://youtu.be/AbCdEf12345 なら AbCdEf12345)。動画は『限定公開(Unlisted)』にすること。『非公開(Private)』は埋め込み再生できないため不可。title は購入者とApp Store審査員に見える文言なので、ストア掲載文と同じ中立トーンを保つこと(マジック/演出/ステージ等の語を使わない)。",
+  "free": [
+    { "title": "基本の使い方", "youtube": "REPLACE_ME" }
+  ],
+  "pro": [
+    { "title": "くわしい使い方 その1", "youtube": "REPLACE_ME" },
+    { "title": "くわしい使い方 その2", "youtube": "REPLACE_ME" }
+  ]
+}
