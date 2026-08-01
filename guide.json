@@ -1,9 +1,35 @@
 {
-  "_note": "このファイルを編集して git push すると、アプリの解説内容が更新されます(アプリの再審査は不要)。youtube には動画IDのみを入れる(例: https://youtu.be/AbCdEf12345 や https://youtube.com/shorts/AbCdEf12345 なら AbCdEf12345)。動画は『限定公開(Unlisted)』にすること。『非公開(Private)』は埋め込み再生できないため不可。縦動画(Shorts)は \"portrait\": true を付ける(付けないと左右が黒帯だらけになる)。title は購入者とApp Store審査員に見える文言なので、ストア掲載文と同じ中立トーンを保ち(マジック/演出/ステージ等の語を使わない)、動画の中身と食い違わないようにすること。",
+  "_note": "このファイルを編集して git push すると、アプリの解説内容が更新されます(アプリの再審査は不要)。youtube には動画IDのみを入れる(例: https://youtu.be/AbCdEf12345 や https://youtube.com/shorts/AbCdEf12345 なら AbCdEf12345)。動画は『限定公開(Unlisted)』にすること。『非公開(Private)』は埋め込み再生できないため不可。縦動画(Shorts)は \"portrait\": true を付ける(付けないと左右が黒帯だらけになる)。titles にはアプリの表示言語ごとのタイトルを書く(対応言語 ja/en/ko/es/fr/de/zh-Hans。該当が無ければ title を使う)。title と titles は購入者とApp Store審査員に見える文言なので、ストア掲載文と同じ中立トーンを保ち(マジック/演出/ステージ等の語を使わない)、動画の中身と食い違わないようにすること。",
   "free": [
-    { "title": "利用ガイド", "youtube": "47i-EWefpn4", "portrait": true }
+    {
+      "title": "利用ガイド",
+      "titles": {
+        "ja": "利用ガイド",
+        "en": "How to Use",
+        "ko": "사용 방법",
+        "es": "Cómo usarla",
+        "fr": "Comment l'utiliser",
+        "de": "So funktioniert's",
+        "zh-Hans": "使用方法"
+      },
+      "youtube": "47i-EWefpn4",
+      "portrait": true
+    }
   ],
   "pro": [
-    { "title": "プロ版の説明", "youtube": "RKW7Olr42Io", "portrait": true }
+    {
+      "title": "プロ版の説明",
+      "titles": {
+        "ja": "プロ版の説明",
+        "en": "About Pro",
+        "ko": "Pro 안내",
+        "es": "Acerca de Pro",
+        "fr": "À propos de Pro",
+        "de": "Über Pro",
+        "zh-Hans": "关于 Pro"
+      },
+      "youtube": "RKW7Olr42Io",
+      "portrait": true
+    }
   ]
 }
