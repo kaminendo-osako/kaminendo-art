@@ -290,7 +290,7 @@ nav a.chip:hover{color:var(--gold)}
 @media (max-width:380px){ .brand img{height:36px} }
 
 /* 中途半端な改行を防ぐ */
-h1,h2,h3{text-wrap:balance}
+h1,h2,h3{word-break:auto-phrase;text-wrap:pretty}
 .hero-copy,.biz p,#ceo p{text-wrap:pretty}
 .btn{white-space:nowrap}
 
@@ -394,7 +394,7 @@ h2{font-size:clamp(22px,5.5vw,28px);letter-spacing:.1em;margin-bottom:22px}
 /* 事業カード */
 .biz{display:flex;flex-direction:column;gap:26px}
 .biz .win{padding-top:26px}
-.biz h3{font-size:18px;letter-spacing:.06em;color:var(--gold)}
+.biz h3{font-size:18px;letter-spacing:.06em;color:var(--gold);word-break:auto-phrase;overflow-wrap:anywhere}
 .biz p{font-size:13px;color:#c5cede;margin-top:8px}
 .biz .skill{margin-top:10px;font-size:12px;line-height:2}
 .biz .skill li{list-style:none;padding-left:1.2em;text-indent:-1.2em}
@@ -446,6 +446,11 @@ footer{
   font-size:11px;color:#8b93a8;letter-spacing:.1em;
 }
 footer a{color:var(--cyan);text-decoration:none}
+.fnav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 0;margin-bottom:10px}
+.fnav a{padding:3px 10px;font-size:12px;letter-spacing:.05em;border-right:1px solid #2a3450;line-height:1.6}
+.fnav a:last-child{border-right:0}
+.fnav a:hover{color:var(--gold)}
+.fttl{font-size:10.5px;color:#5f6b86;letter-spacing:.24em;margin:16px 0 6px}
 
 /* かみふぶき */
 #confetti{position:fixed;inset:0;z-index:60;pointer-events:none;display:none}
@@ -454,7 +459,7 @@ footer a{color:var(--cyan);text-decoration:none}
 @keyframes confall{to{transform:translateY(105vh) rotate(720deg)}}
 
 /* 見出しの正式表記（sec-labelと対になる添え字。検索エンジン・AIに正式名称を伝える） */
-.h2-ja{display:block;font-size:11px;letter-spacing:.25em;color:var(--cyan);opacity:.8;margin-top:6px;font-weight:normal;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere;text-wrap:balance}
+.h2-ja{display:block;font-size:11px;letter-spacing:.25em;color:var(--cyan);opacity:.8;margin-top:6px;font-weight:normal;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere;word-break:auto-phrase;text-wrap:pretty}
 /* 氏名は見出し(h3)に昇格。p だった頃と同じ見た目を維持する */
 #ceo .name{font-size:20px;letter-spacing:.1em;font-weight:normal;color:#c5cede;margin-top:8px}
 
@@ -473,6 +478,7 @@ footer a{color:var(--cyan);text-decoration:none}
   <a class="brand" href="#top"><img src="assets/logo_white.png" alt="株式会社かみねんど" width="585" height="120" decoding="async"></a>
   <nav>
     <a class="chip" href="#biz">じぎょう</a>
+    <a class="chip" href="price.html">りょうきん</a>
     <a class="chip" href="#ceo">やくいん</a>
     <a class="chip" href="#about">かいしゃ</a>
     <a class="chip" href="#contact">といあわせ</a>
@@ -539,8 +545,8 @@ footer a{color:var(--cyan);text-decoration:none}
       </div>
       <div class="win pop">
         <span class="cap">つくったもの</span>
-        <h3>THE WORLD SCREEN（自社アプリ）</h3>
-        <p>マジシャンのための演出アプリ。App Storeで配信中です。企画・設計・開発から多言語対応・ストア運用まで、すべて自社で手がけました。</p>
+        <h3>THE WORLD SCREEN</h3>
+        <p>自社で企画・開発したiOSアプリです。マジシャンのための演出アプリとして App Store で配信中。企画・設計・開発から多言語対応・ストア運用まで、すべて自社で手がけました。</p>
         <ul class="skill">
           <li>無料版とPro版の2構成（アプリ内課金）</li>
           <li>日本語・英語・韓国語・スペイン語・フランス語・ドイツ語・中国語の7言語に対応</li>
@@ -622,9 +628,28 @@ footer a{color:var(--cyan);text-decoration:none}
 </main>
 
 <footer>
-  <p>© 2026 株式会社かみねんど</p>
-  <p style="margin-top:6px"><a href="https://osako.kaminendo.art/" target="_blank" rel="noopener">RYU QUEST（代表プロフィール）</a>｜<a href="https://fukui.kaminendo.art/" target="_blank" rel="noopener">FUKUI QUEST</a></p>
-  <p style="margin-top:6px"><a href="https://l-os.jp/" target="_blank" rel="noopener">L OS（LINE公式アカウント運用システム）</a>｜<a href="privacy-policy.html">プライバシーポリシー</a>｜<a href="privacy.html">THE WORLD SCREEN のポリシー</a></p>
+  <p class="fttl">SITE MAP</p>
+  <nav class="fnav" aria-label="サイト内リンク">
+    <a href="/">ホーム</a>
+    <a href="price.html">料金</a>
+    <a href="outsourcing.html">外注前の確認</a>
+    <a href="/#biz">じぎょう</a>
+    <a href="/#ceo">やくいん</a>
+    <a href="/#about">かいしゃ</a>
+    <a href="/#contact">といあわせ</a>
+  </nav>
+  <p class="fttl">SERVICE &amp; PROFILE</p>
+  <nav class="fnav" aria-label="関連サイト">
+    <a href="https://l-os.jp/" target="_blank" rel="noopener">L OS（LINE運用システム）</a>
+    <a href="https://osako.kaminendo.art/" target="_blank" rel="noopener">RYU QUEST（代表）</a>
+    <a href="https://fukui.kaminendo.art/" target="_blank" rel="noopener">FUKUI QUEST（執行役員）</a>
+  </nav>
+  <p class="fttl">POLICY</p>
+  <nav class="fnav" aria-label="ポリシー">
+    <a href="privacy-policy.html">プライバシーポリシー</a>
+    <a href="privacy.html">THE WORLD SCREEN のポリシー</a>
+  </nav>
+  <p style="margin-top:18px">© 2026 株式会社かみねんど</p>
 </footer>
 
 <canvas id="chara" width="16" height="18" title="…？" aria-hidden="true"></canvas>

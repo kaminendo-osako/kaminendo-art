@@ -37,6 +37,12 @@ th { background: #f2f2f5; width: 34%; }
 .divider { border: 0; border-top: 1px solid #e6e6ea; margin: 48px 0; }
 a { color: #3a5bd6; }
 footer { margin-top: 56px; color: #8a8a92; font-size: .85rem; }
+.fnav { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 0 0 12px; }
+.fnav a { padding: 2px 10px; border-right: 1px solid #d8d8de; line-height: 1.6; }
+.fnav a:first-child { padding-left: 0; }
+.fnav a:last-child { border-right: 0; }
+.fttl { font-size: .72rem; letter-spacing: .18em; color: #9a9aa2; margin: 18px 0 6px; }
+@media (prefers-color-scheme: dark) { .fnav a { border-right-color: #33333a; } }
 @media (prefers-color-scheme: dark) {
   body { background: #0f0f12; color: #e9e9ee; }
   .sub { color: #9a9aa2; }
@@ -115,7 +121,23 @@ footer { margin-top: 56px; color: #8a8a92; font-size: .85rem; }
   <p>アプリ「THE WORLD SCREEN」については、専用の<a href="privacy.html">プライバシーポリシー</a>をご確認ください。</p>
 
   <footer>
-    <p>© 2026 株式会社かみねんど ／ <a href="/">kaminendo.art</a></p>
+    <p class="fttl">SITE MAP</p>
+    <nav class="fnav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="price.html">料金</a>
+      <a href="outsourcing.html">外注前の確認</a>
+      <a href="/#biz">事業内容</a>
+      <a href="/#about">会社概要</a>
+      <a href="/#contact">お問い合わせ</a>
+    </nav>
+    <p class="fttl">SERVICE</p>
+    <nav class="fnav" aria-label="関連サイト">
+      <a href="https://l-os.jp/" target="_blank" rel="noopener">L OS</a>
+      <a href="https://osako.kaminendo.art/" target="_blank" rel="noopener">RYU QUEST</a>
+      <a href="https://fukui.kaminendo.art/" target="_blank" rel="noopener">FUKUI QUEST</a>
+      <a href="privacy.html">THE WORLD SCREEN のポリシー</a>
+    </nav>
+    <p style="margin-top:18px">© 2026 株式会社かみねんど ／ <a href="/">kaminendo.art</a></p>
   </footer>
 </div>
 </body>
