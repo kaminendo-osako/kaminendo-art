@@ -39,6 +39,7 @@
 ## リンク
 
 - [トップページ](https://kaminendo.art/): 会社概要・事業内容・役員紹介・お問い合わせ
+- [料金ページ](https://kaminendo.art/price.html): 構築30万円〜・運用代行 月額1万円〜・L OS無料・派遣10万円〜
 - [RYU QUEST（代表 大迫龍太のプロフィール）](https://osako.kaminendo.art/)
 - [FUKUI QUEST（執行役員 福井創祈のプロフィール）](https://fukui.kaminendo.art/)
 - [L OS（LINE公式アカウント運用システム）](https://l-os.jp/)
