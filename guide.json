@@ -18,15 +18,15 @@
   ],
   "pro": [
     {
-      "title": "プロ版の説明",
+      "title": "くわしい使い方",
       "titles": {
-        "ja": "プロ版の説明",
-        "en": "About Pro",
-        "ko": "Pro 안내",
-        "es": "Acerca de Pro",
-        "fr": "À propos de Pro",
-        "de": "Über Pro",
-        "zh-Hans": "关于 Pro"
+        "ja": "くわしい使い方",
+        "en": "In Depth",
+        "ko": "자세한 사용법",
+        "es": "En detalle",
+        "fr": "En détail",
+        "de": "Im Detail",
+        "zh-Hans": "详细用法"
       },
       "youtube": "RKW7Olr42Io",
       "portrait": true

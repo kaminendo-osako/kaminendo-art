@@ -36,7 +36,7 @@
 <div class="wrap">
 
   <h1>プライバシーポリシー</h1>
-  <p class="sub">THE WORLD SCREEN ／ 最終更新: 2026年7月27日</p>
+  <p class="sub">THE WORLD SCREEN ／ 最終更新: 2026年10月24日</p>
 
   <p>THE WORLD SCREEN(以下「本アプリ」)は、開発者がユーザーの個人を特定する情報を収集しない方針で設計されています。本アプリがデータを端末の外へ送信するのは、以下に記載する機能をユーザーが自ら操作した場合に限られます。</p>
 
@@ -60,11 +60,31 @@
   <h3>アプリ内課金</h3>
   <p>アプリ内課金の決済は Apple が処理します。開発者はクレジットカード番号などの決済情報を受け取らず、保存もしません。</p>
 
+  <h3>ライセンスキー</h3>
+  <p>商品カードなどでお受け取りのキーを本アプリに入力した場合、そのキーが使えることと、使用中の台数を確かめるために、次の情報を開発者のサーバー(Cloudflare)へ送信します。</p>
+  <ul>
+    <li>入力されたキー</li>
+    <li>本アプリがこの用途のためだけに作る、ランダムな端末番号(端末の製造番号や広告用の識別子ではありません)</li>
+    <li>本アプリのバージョン</li>
+  </ul>
+  <p>サーバーには、キーと端末番号をそのままではなく、元に戻せない形(ハッシュ)に変えて保存します。氏名・メールアドレスなどは送信しません。登録を解除すると、その端末の記録は削除されます。不正な連続入力を防ぐため、接続元の IP アドレスも元に戻せない形に変えたうえで、一時的に回数の記録に使います。</p>
+
+  <h3>みんなの作品(作った画面の公開)</h3>
+  <p>「自分で作る」で作成した画面を、ほかの利用者が取り込めるよう公開する機能があります。<strong>ユーザーが公開の操作をし、内容を確認した場合に限り</strong>、次のデータを開発者のサーバー(Cloudflare)へ送信し、公開します。</p>
+  <ul>
+    <li>ユーザーが選んだ素材の画像(PNG。状態別の画像を含む)または動画と、その縮小画像。動画の音声は、その作品で「音声を再生」をオンにしている場合にのみ含めます</li>
+    <li>表示部・ボタンの配置、表示の色の設定、ユーザーが付けた作品の名前</li>
+    <li>本アプリの表示言語と iOS のバージョン(数字のみ)</li>
+    <li>本アプリがこの用途のためだけに作る、ランダムな番号(取り下げに使います)</li>
+  </ul>
+  <p>画像・動画からは、撮影場所・日時・機種などの情報(メタデータ)を取り除いてから送信します。画面に表示する数字(式・答え・時刻・電話番号など)は送信しません。サーバーには、ランダムな番号をそのままではなく元に戻せない形(ハッシュ)で保存し、氏名・メールアドレスなどは扱いません。公開した画像は、本アプリの利用者であれば誰でも見たり取り込んだりできます。<strong>画像に個人情報が写っていないことを確かめてから公開してください。</strong></p>
+  <p>公開した作品は、アプリ内の「自分の投稿」からいつでも取り下げられ、取り下げるとサーバーから画像を削除します。利用者からの通報を受けた作品は、開発者が確認し、規約に反するもの(個人情報が写っているもの・不適切なもの・権利を侵害するもの)を削除します。通報と回数制限のため、接続元の IP アドレスを元に戻せない形に変えたうえで記録します(回数の記録は一時的なもので毎日消去し、通報の記録は 90 日で消去します)。取り下げた作品の名前などの情報も消去します。</p>
+
   <h3>トラッキング</h3>
   <p>本アプリは、広告・解析などのトラッキングを一切行いません。広告は表示しません。</p>
 
   <h3>第三者への提供</h3>
-  <p>上記の機能を利用した場合に限り、Supabase Inc.(クラウドストレージ)および Google LLC(YouTube 埋め込みプレーヤー)のサービスを経由します。それ以外に、ユーザーのデータを第三者へ提供・販売することはありません。</p>
+  <p>上記の機能を利用した場合に限り、Supabase Inc.(クラウドストレージ)、Cloudflare, Inc.(ライセンスキーの確認・みんなの作品)および Google LLC(YouTube 埋め込みプレーヤー)のサービスを経由します。それ以外に、ユーザーのデータを第三者へ提供・販売することはありません。</p>
 
   <h3>お子様のプライバシー</h3>
   <p>本アプリは、お子様から意図的に個人情報を収集することはありません。上記のとおり、いかなる利用者からも個人を特定する情報を収集しません。</p>
@@ -75,7 +95,7 @@
   <hr class="divider">
 
   <h1>Privacy Policy</h1>
-  <p class="sub">THE WORLD SCREEN — Last updated: July 27, 2026</p>
+  <p class="sub">THE WORLD SCREEN — Last updated: October 24, 2026</p>
 
   <p>THE WORLD SCREEN ("the app") is designed so that the developer does not collect personally identifiable information. The app sends data off your device only when you actively use the features described below.</p>
 
@@ -99,11 +119,31 @@
   <h3>In-app purchase</h3>
   <p>Payments are handled by Apple. The developer never receives or stores payment details such as card numbers.</p>
 
+  <h3>License keys</h3>
+  <p>If you enter a key (for example, one printed on a product card), the app sends the following to the developer's server (Cloudflare) to confirm that the key is valid and to count how many devices use it:</p>
+  <ul>
+    <li>The key you entered</li>
+    <li>A random device number that the app creates only for this purpose (not a hardware serial number or advertising identifier)</li>
+    <li>The app version</li>
+  </ul>
+  <p>The server stores the key and the device number only in a one-way (hashed) form. No name or email address is sent. When you remove a device, its record is deleted. To prevent repeated guessing, the connecting IP address is also kept briefly, in hashed form, to count attempts.</p>
+
+  <h3>Community (publishing screens you made)</h3>
+  <p>You can publish a screen you made with "Create your own" so that other users can add it. <strong>Only when you choose to publish and confirm the contents</strong>, the following is sent to the developer's server (Cloudflare) and made public:</p>
+  <ul>
+    <li>the image (PNG, including any state images) or video you chose, and a smaller preview of it. A video's audio is included only if "Play sound" is turned on for that screen</li>
+    <li>the layout of the display areas and buttons, the display color setting, and the name you give it</li>
+    <li>the app's display language and the iOS version number</li>
+    <li>a random number the app creates only for this purpose (used to withdraw your posts)</li>
+  </ul>
+  <p>Location, date, device model and other metadata are removed from images and videos before they are sent. The numbers shown on screen (expression, result, time, phone number, etc.) are never sent. The server stores the random number only in a one-way (hashed) form and handles no name or email address. Published images can be viewed and added by anyone who uses the app. <strong>Please make sure no personal information appears in an image before publishing it.</strong></p>
+  <p>You can withdraw a published screen at any time from "My posts" in the app; its images are then deleted from the server. When users report a screen, the developer reviews it and removes anything that breaks the rules (personal information, inappropriate content, or infringement of rights). For reports and rate limits, the connecting IP address is recorded in hashed form (attempt counts are temporary and cleared daily; report records are deleted after 90 days). The name and other details of a withdrawn screen are also deleted.</p>
+
   <h3>Tracking</h3>
   <p>The app performs no advertising or analytics tracking, and shows no ads.</p>
 
   <h3>Third parties</h3>
-  <p>Only when you use the features above, data passes through Supabase Inc. (cloud storage) and Google LLC (the YouTube embedded player). We do not otherwise share or sell your data to any third party.</p>
+  <p>Only when you use the features above, data passes through Supabase Inc. (cloud storage), Cloudflare, Inc. (license key checks and Community) and Google LLC (the YouTube embedded player). We do not otherwise share or sell your data to any third party.</p>
 
   <h3>Children's privacy</h3>
   <p>The app does not knowingly collect personal information from children. As stated above, it collects no personally identifiable information from any user.</p>
