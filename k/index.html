@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; script-src 'sha256-jJ/vXfsoXAqo3QwMhUWNmoZ8eTFL8XpBt8yInXzdsJU='; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<!-- CSP の sha256 は下の <script> の中身から作る。スクリプトを1文字でも変えたら作り直す(しないと動かなくなる) -->
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#141435">
+<title>THE WORLD SCREEN のキー</title>
+<!--
+  商品カード裏の QR から開くページ。URL は https://kaminendo.art/k/#TWS + 12文字。
+  キーは # の後ろ(fragment)にあるので、サーバーにもアクセスログにも届かない。
+  このページはキーをどこへも送らない(外部の読み込み・計測を置かない)。
+  アプリの文言(「ライセンスキー」「登録する」「この端末の登録を解除」)を変えたら、下の手順も合わせる。
+-->
+<style>
+  :root {
+    color-scheme: light dark;
+    --night: #141435;       /* カード表の紺 */
+    --gold: #efd297;        /* カード表の金 */
+    --paper: #ffffff;       /* カード裏の地 */
+    --ink: #1d2350;         /* カード裏の文字(墨に少し紺) */
+    --ink-soft: #5d6283;
+    --brass: #a8863a;       /* 手順の番号 */
+    --rule: #e4e4ec;
+    --well: #f4f4f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0c0c22; --ink: #ecebf3; --ink-soft: #a3a3bd;
+      --brass: #d9b977; --rule: #26264a; --well: #16163a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  .night {
+    background: var(--night);
+    padding: max(20px, env(safe-area-inset-top)) 16px 0;
+  }
+  .card {
+    display: block; width: 100%; max-width: 440px; margin: 0 auto;
+    aspect-ratio: 1219 / 737; border-radius: 10px 10px 0 0;
+    background: var(--night) url("card.webp") center / cover no-repeat;
+  }
+  main { max-width: 440px; margin: 0 auto; padding: 32px 16px 56px; }
+
+  .label { font-size: .82rem; letter-spacing: .14em; color: var(--ink-soft); margin: 0 0 6px; }
+  .key {
+    margin: 0; padding: 18px 16px; border-radius: 10px; background: var(--well);
+    font: 600 clamp(1.25rem, 6.4vw, 1.6rem) / 1.3 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    letter-spacing: .06em; color: var(--ink); text-align: center;
+    -webkit-user-select: all; user-select: all; word-break: keep-all; overflow-wrap: anywhere;
+  }
+  .key .dash { color: var(--ink-soft); }
+  button, .btn {
+    -webkit-appearance: none; appearance: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: .5em;
+    width: 100%; min-height: 52px; margin: 12px 0 0; padding: 0 20px; border-radius: 10px;
+    font: 600 1rem/1 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    letter-spacing: .04em; text-decoration: none;
+    background: var(--night); color: var(--gold); border: 1px solid var(--night);
+  }
+  @media (prefers-color-scheme: dark) { button, .btn { background: var(--gold); color: var(--night); border-color: var(--gold); } }
+  .btn.quiet { background: transparent; color: var(--ink); border-color: var(--rule); }
+  button:focus-visible, .btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 3px; }
+  .copied { font-size: .85rem; color: var(--ink-soft); text-align: center; min-height: 1.75em; margin: 6px 0 0; }
+
+  ol { list-style: none; margin: 18px 0 0; padding: 0; }
+  li { display: grid; grid-template-columns: 30px 1fr; column-gap: 14px; padding: 18px 0; border-top: 1px solid var(--rule); }
+  li:last-child { border-bottom: 1px solid var(--rule); }
+  .num { width: 26px; height: 34px; color: var(--brass); fill: currentColor; margin-top: -2px; }
+  .step { margin: 0; font-weight: 600; font-size: 1.02rem; }
+  .step em { font-style: normal; white-space: nowrap; }
+  .step + .btn { margin-top: 12px; }
+  .sub { margin: 4px 0 0; font-size: .9rem; color: var(--ink-soft); }
+
+  .notes { margin: 28px 0 0; padding: 0; list-style: none; font-size: .86rem; color: var(--ink-soft); }
+  .notes li { display: block; padding: 0 0 0 1.1em; border: 0; text-indent: -1.1em; }
+  .notes li::before { content: "・"; }
+
+  .missing h1 { font-size: 1.15rem; margin: 0 0 10px; }
+  .missing p { margin: 0 0 10px; font-size: .95rem; }
+  [hidden] { display: none !important; }
+
+  footer { max-width: 440px; margin: 0 auto; padding: 0 16px max(32px, env(safe-area-inset-bottom)); font-size: .78rem; color: var(--ink-soft); }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+
+<div class="night"><div class="card" role="img" aria-label="THE WORLD SCREEN のカード"></div></div>
+
+<main>
+  <section id="found" hidden>
+    <p class="label">あなたのキー</p>
+    <p class="key" id="key" aria-live="polite"></p>
+    <button type="button" id="copy">キーをコピー</button>
+    <p class="copied" id="copied" role="status"></p>
+
+    <ol>
+      <li>
+        <svg class="num" aria-hidden="true"><use href="digits.svg#d1"></use></svg>
+        <div>
+          <p class="step">App Store で <em>THE WORLD SCREEN</em> を入れる</p>
+          <a class="btn quiet" href="https://apps.apple.com/jp/app/id6792743604">App Store で開く</a>
+        </div>
+      </li>
+      <li>
+        <svg class="num" aria-hidden="true"><use href="digits.svg#d2"></use></svg>
+        <div>
+          <p class="step">アプリを開き、「ライセンスキー」の欄に貼り付けて「登録する」を押す</p>
+          <p class="sub">小文字・ハイフン無しでもかまいません。</p>
+        </div>
+      </li>
+      <li>
+        <svg class="num" aria-hidden="true"><use href="digits.svg#d3"></use></svg>
+        <div>
+          <p class="step">すべての機能と解説動画が使えます</p>
+        </div>
+      </li>
+    </ol>
+
+    <ul class="notes">
+      <li>キー1つで、iPhone 2台まで登録できます。</li>
+      <li>機種変更のときは、古い iPhone のアプリで登録を解除すると、新しい iPhone で使えます。</li>
+      <li>このページのアドレスにはキーが含まれています。人に送らないでください。</li>
+      <li>iPhone 用のアプリです（iOS 16 以降）。</li>
+    </ul>
+  </section>
+
+  <section id="missing" class="missing" hidden>
+    <h1>キーを読み取れませんでした</h1>
+    <p>カードの裏の QR コードを、もう一度 iPhone のカメラで読み取ってください。</p>
+    <p>読み取れないときは、カードに印刷されたキーをアプリに手で入力できます。</p>
+    <a class="btn quiet" href="https://apps.apple.com/jp/app/id6792743604">App Store で開く</a>
+  </section>
+</main>
+
+<footer>
+  <p>THE WORLD SCREEN ／ 株式会社かみねんど ・ <a href="/privacy.html">プライバシーポリシー</a></p>
+</footer>
+
+<script>
+(function () {
+  // # の後ろを読む。キーの文字は 0-9 と A-Z から I・L・O を除いた33文字(make_keys.py と同じ)
+  var raw = '';
+  try { raw = decodeURIComponent(location.hash.slice(1) || ''); } catch (e) { raw = ''; }
+  raw = raw.toUpperCase().replace(/[^0-9A-Z]/g, '');
+  var m = /^TWS([0-9A-HJKMNP-Z]{12})$/.exec(raw);
+  if (!m) { document.getElementById('missing').hidden = false; return; }
+
+  var b = m[1];
+  var text = 'TWS-' + b.slice(0, 4) + '-' + b.slice(4, 8) + '-' + b.slice(8);
+  var keyEl = document.getElementById('key');
+  text.split('-').forEach(function (part, i) {
+    if (i) { var d = document.createElement('span'); d.className = 'dash'; d.textContent = '-'; keyEl.appendChild(d); }
+    keyEl.appendChild(document.createTextNode(part));
+  });
+  document.getElementById('found').hidden = false;
+
+  var btn = document.getElementById('copy'), note = document.getElementById('copied');
+  function done(ok) {
+    note.textContent = ok ? 'コピーしました。アプリに貼り付けてください。' : 'コピーできませんでした。キーを長押ししてコピーしてください。';
+    if (ok) btn.textContent = 'コピーしました';
+  }
+  function fallback() {
+    var t = document.createElement('textarea');
+    t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0, text.length);
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(t); done(ok);
+  }
+  btn.addEventListener('click', function () {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
